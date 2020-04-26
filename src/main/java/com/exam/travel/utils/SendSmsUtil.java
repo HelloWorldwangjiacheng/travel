@@ -8,9 +8,9 @@ import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.exceptions.ServerException;
 import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
-import org.springframework.beans.factory.annotation.Value;
-
-import java.util.Random;
+import com.exam.travel.dto.PhoneTextDTO;
+import com.exam.travel.result.CodeMsg;
+import com.exam.travel.result.Result;
 
 
 /**
@@ -20,33 +20,22 @@ import java.util.Random;
  */
 public class SendSmsUtil {
 
-    @Value("${aliyun.sms.accessKeyId}")
-    public String accessKeyId;
-
-    @Value("${p5VaKznLqCHCkiQQO5R8Kxk0pNnL8K}")
-    public String accessSecret;
-
-    /**
-     * 随机验证码
-     */
-    private int phoneCode;
-
-    public int getPhoneCode() {
-        return phoneCode;
-    }
-
-    public void setPhoneCode() {
-        /**
-         * 会生成一个0~9999的随机数，
-         * 用code=(int)(Math.random()*9999)+10000;得到的code会有除0的情况
-         */
-        phoneCode = new Random().nextInt(10000);
-    }
+//    @Value("${aliyun.sms.accessKeyId}")
+//    public String accessKeyId = "LTAI4FuTCbae3XHfYRFn5dun";
+//
+//    @Value("${p5VaKznLqCHCkiQQO5R8Kxk0pNnL8K}")
+//    public String accessSecret;
 
 
-    public boolean sendPhoneText(String phoneNum){
+    public Result<PhoneTextDTO> sendPhoneText(String phoneNum){
 
-        DefaultProfile profile = DefaultProfile.getProfile("cn-hangzhou", accessKeyId, accessSecret);
+        int phoneCode = RandomUtil.getPhoneCode(8999);
+
+        PhoneTextDTO phoneTextDTO = new PhoneTextDTO();
+        DefaultProfile profile = DefaultProfile.getProfile(
+                "cn-hangzhou",
+                "LTAI4FtTrxLjiaYnTGCoaTFD",
+                "K04Uuddocinik9inZffYgN4SMqhEUm");
         IAcsClient client = new DefaultAcsClient(profile);
 
         CommonRequest request = new CommonRequest();
@@ -62,14 +51,24 @@ public class SendSmsUtil {
         try {
             CommonResponse response = client.getCommonResponse(request);
             System.out.println(response.getData());
-            return true;
+            phoneTextDTO.setSuccess(true);
+            phoneTextDTO.setPhoneCode(phoneCode+"");
+            phoneTextDTO.setErrorMsg(null);
+            return Result.success(phoneTextDTO);
         } catch (ServerException e) {
             e.printStackTrace();
+            phoneTextDTO.setErrorMsg(CodeMsg.SEND_PHONE_CODE_SERVER_ERROR.getMsg());
+            phoneTextDTO.setPhoneCode(null);
+            phoneTextDTO.setSuccess(false);
+            return Result.success(phoneTextDTO);
         } catch (ClientException e) {
             e.printStackTrace();
+            phoneTextDTO.setErrorMsg(CodeMsg.SEND_PHONE_CODE_CLIENT_ERROR.getMsg());
+            phoneTextDTO.setPhoneCode(null);
+            phoneTextDTO.setSuccess(false);
+            return Result.success(phoneTextDTO);
         }
 
-        return false;
     }
 
 

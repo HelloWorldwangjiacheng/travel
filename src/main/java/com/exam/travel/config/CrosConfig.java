@@ -6,6 +6,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
  * 解决跨域问题配置
+ * @author w1586
  */
 @Configuration
 public class CrosConfig implements WebMvcConfigurer {

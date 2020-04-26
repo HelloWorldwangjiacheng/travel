@@ -13,6 +13,12 @@ public class Result<T> {
     private String msg;
     private T data;
 
+    public Result(CodeMsg codeMsg, T data) {
+        this.code = codeMsg.getCode();
+        this.msg = codeMsg.getMsg();
+        this.data = data;
+    }
+
     public Result(int code, String msg) {
         this.code = code;
         this.msg = msg;
@@ -34,6 +40,14 @@ public class Result<T> {
         this.msg = codeMsg.getMsg();
     }
 
+    /**
+     * 其他时候的调用
+     * @param <T>
+     * @return
+     */
+    public static <T> Result<T> custom(CodeMsg codeMsg, T t){
+        return new Result<T>(codeMsg, t);
+    }
 
     /**
      * 成功时候的调用
@@ -52,6 +66,8 @@ public class Result<T> {
     public static <T> Result<T> error(CodeMsg codeMsg){
         return new Result<T>(codeMsg);
     }
+
+
 
 
 }

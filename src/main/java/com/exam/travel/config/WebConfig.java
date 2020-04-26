@@ -2,11 +2,8 @@ package com.exam.travel.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
-import java.util.List;
 
 @Configuration
 //@EnableWebMvc
@@ -16,12 +13,10 @@ public class WebConfig implements WebMvcConfigurer {
      * 也可以重写一个addResourceHandlers（ResourceHandlerRegistry registry）这个方法
      * @param registry
      */
-//    @Autowired
-//    private SessionInterceptor sessionInterceptor;
-
-
     @Autowired
-    UserArgumentResolver userArgumentResolver;
+    private SessionInterceptor sessionInterceptor;
+
+
 
     @Override
     public void addInterceptors(InterceptorRegistry registry){
@@ -30,9 +25,4 @@ public class WebConfig implements WebMvcConfigurer {
 //        registry.addInterceptor(sessionInterceptor).addPathPatterns("/**");
     }
 
-
-    @Override
-    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-        resolvers.add(userArgumentResolver);
-    }
 }
