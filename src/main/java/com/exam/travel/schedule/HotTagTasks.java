@@ -30,7 +30,7 @@ public class HotTagTasks {
     @Autowired
     private HotTagCache hotTagCache;
 
-    @Scheduled(fixedRate = 15000)
+    @Scheduled(fixedRate = 60*60*1000)
     public void reportCurrentTime() {
         int offset = 0;
         int limit = 5;
@@ -61,9 +61,9 @@ public class HotTagTasks {
 //            System.out.println(k + ":" + v);
 //        });
 
-        priorities.forEach((k, v) -> {
-            System.out.println(k + ":" + v);
-        });
+//        priorities.forEach((k, v) -> {
+//            System.out.println(k + ":" + v);
+//        });
 
         hotTagCache.updateTags(priorities);
     }

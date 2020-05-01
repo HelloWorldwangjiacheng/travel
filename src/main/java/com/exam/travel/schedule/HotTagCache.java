@@ -17,7 +17,7 @@ public class HotTagCache {
     /**
      * 优先队列的最大长度
      */
-    private static final int MAX = 2;
+    private static final int MAX = 5;
 
     private Map<String, Integer> tags = new HashMap<>();
     private List<String> hots = new ArrayList<>();

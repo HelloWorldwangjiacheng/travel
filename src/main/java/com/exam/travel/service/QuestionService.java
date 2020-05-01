@@ -41,14 +41,12 @@ public class QuestionService {
     /**
      *   这是在首页的分页展示
      */
-    public PaginationDTO<QuestionDTO> list(String search, Integer page, Integer size){
+    public PaginationDTO<QuestionDTO> list(String tag, String search, Integer page, Integer size){
 
         if (StringUtils.isNotBlank(search)){
             String[] tags = StringUtils.split(search, " ");
             search = Arrays.stream(tags).collect(Collectors.joining("|"));
         }
-
-
 
         PaginationDTO<QuestionDTO> paginationDTO = new PaginationDTO<>();
         //offset偏移
@@ -57,9 +55,10 @@ public class QuestionService {
         //总记录数
 //        Integer totalCount = questionMapper.count();
 
-//        Integer totalCount = (int) questionMapper.countByExample(new QuestionExample(););
+//        Integer totalCount = (int) questionMapper.countByExample(new QuestionExample());
         QuestionQueryDTO questionQueryDTO = new QuestionQueryDTO();
         questionQueryDTO.setSearch(search);
+        questionQueryDTO.setTag(tag);
         Integer totalCount  = questionExtMapper.countBySearch(questionQueryDTO);
         //得到总页数
         if (totalCount % size == 0) {
