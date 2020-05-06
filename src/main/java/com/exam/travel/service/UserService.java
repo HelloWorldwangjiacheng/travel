@@ -48,6 +48,7 @@ public class UserService{
                         HttpServletRequest request,
                         LoginDTO loginDTO)
     {
+        System.out.println(loginDTO.toString());
         if (loginDTO == null) {
             throw new GlobalException(CodeMsg.SERVER_ERROR);
         }
